@@ -149,6 +149,15 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    // Log request info for debugging mobile issues
+    console.log('Login Attempt:', {
+      email,
+      headers: req.headers,
+      userAgent: req.headers['user-agent'],
+      origin: req.headers['origin'],
+      ip: req.ip,
+    });
+
     if (!email || !password) {
       return res.status(400).json({
         success: false,
@@ -192,10 +201,19 @@ exports.login = async (req, res) => {
       });
     }
   } catch (error) {
+    // Log error details for debugging
     console.error("Login Error:", error);
+    console.error("Request Info:", {
+      headers: req.headers,
+      userAgent: req.headers['user-agent'],
+      origin: req.headers['origin'],
+      ip: req.ip,
+      body: req.body,
+    });
     return res.status(500).json({
       success: false,
       message: "Login failed. Please try again.",
+      error: error.message,
     });
   }
 };
