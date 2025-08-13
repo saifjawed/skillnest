@@ -24,7 +24,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: ['https://skillnest-eta.vercel.app'],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"], //include Authorization here
   })
