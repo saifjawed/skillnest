@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { VscSignOut, VscMenu, VscChromeClose } from "react-icons/vsc";
+import { VscSignOut, VscMenu, VscChromeClose, VscBook } from "react-icons/vsc"; // Added VscBook for Catalog icon
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -52,6 +52,13 @@ export default function Sidebar() {
               />
             );
           })}
+
+          {/* Catalog Option */}
+          <SidebarLink
+            link={{ name: "Courses", path: "/catalog/ai-ml" }}
+            iconName="VscBook"
+            onClick={() => setIsOpen(false)}
+          />
         </div>
 
         <div className="mx-auto mt-6 mb-6 h-[1px] w-10/12 bg-richblack-700" />
