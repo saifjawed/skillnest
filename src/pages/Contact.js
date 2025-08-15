@@ -19,13 +19,15 @@ const Contact = () => {
           <ContactForm />
         </div>
       </div>
-      <div className="relative mx-auto my-20 flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 bg-richblack-900 text-white">
-        {/* Reviws from Other Learner */}
-        <h1 className="text-center text-4xl font-semibold mt-8">
-          Reviews from other learners
-          <ReviewSlider/>
-        </h1>
-      </div>
+ <div className="relative mx-auto my-20 flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 bg-richblack-900 text-white px-4">
+  {/* Reviews from Other Learners */}
+  <h1 className="text-center font-semibold mt-8 text-2xl sm:text-3xl md:text-4xl">
+    Reviews from other learners
+  </h1>
+  <div className="w-full mt-4">
+    <ReviewSlider />
+  </div>
+</div>
       <Footer />
     </div>
   )
