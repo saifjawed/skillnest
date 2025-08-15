@@ -139,82 +139,68 @@ function Navbar() {
           {token !== null && <ProfileDropdown />}
         </div>
 
-        {/* Mobile: Logo Center + Hamburger Right */}
+        {/* Mobile: Logo Center + Hamburger Right (Only if logged out) */}
         <div className="flex md:hidden items-center justify-center w-full relative">
           {/* Centered Logo */}
           <Link to="/" className="absolute left-1/2 -translate-x-1/2">
             <img src={logo} alt="Logo" width={140} height={28} loading="lazy" />
           </Link>
-          {/* Hamburger on right */}
-          <button
-            className="absolute right-0"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? (
-              <AiOutlineClose fontSize={24} fill="#AFB2BF" />
-            ) : (
-              <AiOutlineMenu fontSize={24} fill="#AFB2BF" />
-            )}
-          </button>
+
+          {/* Hamburger only if NOT logged in */}
+          {!token && (
+            <button
+              className="absolute right-0"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? (
+                <AiOutlineClose fontSize={24} fill="#AFB2BF" />
+              ) : (
+                <AiOutlineMenu fontSize={24} fill="#AFB2BF" />
+              )}
+            </button>
+          )}
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-    <div className="absolute top-14 left-0 w-full bg-richblack-800 flex flex-col items-start p-4 gap-4 md:hidden z-50">
-  {/* Show login/signup only if not logged in */}
-  {!token && (
-    <>
-      <Link
-        to="/login"
-        onClick={() => setMobileMenuOpen(false)}
-        className="text-richblack-25"
-      >
-        Log in
-      </Link>
-      <Link
-        to="/signup"
-        onClick={() => setMobileMenuOpen(false)}
-        className="text-richblack-25"
-      >
-        Sign up
-      </Link>
-    </>
-  )}
-
-  <Link
-    to="/catalog/ai-ml"
-    onClick={() => setMobileMenuOpen(false)}
-    className="text-richblack-25"
-  >
-    Courses
-  </Link>
-  <Link
-    to="/about"
-    onClick={() => setMobileMenuOpen(false)}
-    className="text-richblack-25"
-  >
-    About Us
-  </Link>
-  <Link
-    to="/contact"
-    onClick={() => setMobileMenuOpen(false)}
-    className="text-richblack-25"
-  >
-    Contact Us
-  </Link>
-
-  {/* Show Dashboard only if logged in */}
-  {token && (
-    <Link
-      to="/dashboard/my-profile"
-      onClick={() => setMobileMenuOpen(false)}
-      className="text-richblack-25"
-    >
-      My Profile
-    </Link>
-  )}
-</div>
+      {/* Mobile Menu (Only for logged-out users) */}
+      {!token && mobileMenuOpen && (
+        <div className="absolute top-14 left-0 w-full bg-richblack-800 flex flex-col items-start p-4 gap-4 md:hidden z-50">
+          <Link
+            to="/login"
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-richblack-25"
+          >
+            Log in
+          </Link>
+          <Link
+            to="/signup"
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-richblack-25"
+          >
+            Sign up
+          </Link>
+          <Link
+            to="/catalog/ai-ml"
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-richblack-25"
+          >
+            Courses
+          </Link>
+          <Link
+            to="/about"
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-richblack-25"
+          >
+            About Us
+          </Link>
+          <Link
+            to="/contact"
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-richblack-25"
+          >
+            Contact Us
+          </Link>
+        </div>
       )}
     </div>
   );
