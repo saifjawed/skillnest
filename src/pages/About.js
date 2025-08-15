@@ -110,12 +110,15 @@ import ReviewSlider from '../components/common/ReviewSlider';
         <LearningGrid/>
         <ContactFormSection/>
     </section>
-    <section>
-      <div className="text-center text-4xl font-semibold mt-8">
-      Reviews from other Learners
-      <ReviewSlider/>
-    </div>
+    <section className="px-4 mt-8">
+      <h2 className="text-center font-semibold text-2xl sm:text-3xl md:text-4xl text-white">
+                 Reviews from other Learners
+      </h2>
+      <div className="mt-4 w-full">
+          <ReviewSlider />
+      </div>
     </section>
+
     <Footer/>
 
 </div>
