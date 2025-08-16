@@ -22,11 +22,24 @@ database.connect();
 //middleware
 app.use(express.json());
 app.use(cookieParser());
+const allowedOrigins = [
+  "http://localhost:3000",              // local dev
+  "https://vercel.com/saif-jaweds-projects/skillnest",   // your deployed frontend domain
+];
+
 app.use(
   cors({
-    origin: ["http://localhost:3000","https://skillnest-eta.vercel.app"],
+    origin: function (origin, callback) {
+      // allow requests with no origin (like mobile apps or curl)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"], //include Authorization here
+    allowedHeaders: ["Content-Type", "Authorization"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   })
 );
 
