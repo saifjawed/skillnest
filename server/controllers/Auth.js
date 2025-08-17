@@ -180,7 +180,7 @@ exports.login = async (req, res) => {
       const options = {
         httpOnly: true,
         sameSite: isProduction ? "None" : "Lax",
-        secure: isProduction, // true in prod (HTTPS), false in dev (localhost)
+        secure: isProduction ? true : false,
         expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
       };
 
