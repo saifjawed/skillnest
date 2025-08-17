@@ -71,7 +71,6 @@ exports.signup = async (req, res) => {
       otp,
     } = req.body;
 
-    // Validate required fields
     if (!firstname || !lastname || !email || !password || !confirmPassword || !otp) {
       return res.status(403).json({
         success: false,
@@ -94,7 +93,6 @@ exports.signup = async (req, res) => {
       });
     }
 
-    // Get the latest OTP entry
     const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
     if (response.length === 0 || String(otp) !== String(response[0].otp)) {
       return res.status(400).json({
@@ -103,13 +101,10 @@ exports.signup = async (req, res) => {
       });
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Set approval based on account type
     let approved = accountType === "Instructor" ? false : true;
 
-    // Create user profile
     const profileDetails = await Profile.create({
       gender: null,
       dateOfBirth: null,
@@ -117,7 +112,6 @@ exports.signup = async (req, res) => {
       contactNumber: contactNumber || null,
     });
 
-    // Create user
     const user = await User.create({
       firstname,
       lastname,
@@ -149,12 +143,10 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Log request info for debugging mobile issues
-    console.log('Login Attempt:', {
+    console.log("Login Attempt:", {
       email,
-      headers: req.headers,
-      userAgent: req.headers['user-agent'],
-      origin: req.headers['origin'],
+      userAgent: req.headers["user-agent"],
+      origin: req.headers["origin"],
       ip: req.ip,
     });
 
@@ -183,18 +175,24 @@ exports.login = async (req, res) => {
       user.token = token;
       user.password = undefined;
 
+      // ✅ Cookie options (auto switch for dev/prod)
+      const isProduction = process.env.NODE_ENV === "production";
       const options = {
-        expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
         httpOnly: true,
+        sameSite: isProduction ? "None" : "Lax",
+        secure: isProduction, // true in prod (HTTPS), false in dev (localhost)
+        expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
       };
 
-      return res.cookie("token", token, options).status(200).json({
-        success: true,
-        sameSite: "None",
-        token,
-        user,
-        message: "User login successful",
-      });
+      return res
+        .cookie("token", token, options)
+        .status(200)
+        .json({
+          success: true,
+          token,
+          user,
+          message: "User login successful",
+        });
     } else {
       return res.status(401).json({
         success: false,
@@ -202,15 +200,7 @@ exports.login = async (req, res) => {
       });
     }
   } catch (error) {
-    // Log error details for debugging
     console.error("Login Error:", error);
-    console.error("Request Info:", {
-      headers: req.headers,
-      userAgent: req.headers['user-agent'],
-      origin: req.headers['origin'],
-      ip: req.ip,
-      body: req.body,
-    });
     return res.status(500).json({
       success: false,
       message: "Login failed. Please try again.",
