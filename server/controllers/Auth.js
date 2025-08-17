@@ -177,13 +177,13 @@ exports.login = async (req, res) => {
 
       // ✅ Cookie options (auto switch for dev/prod)
       const isProduction = process.env.NODE_ENV === "production";
-      const options = {
-        httpOnly: true,
-        sameSite: isProduction ? "None" : "Lax",
-        secure: isProduction ? true : false,
-        expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-      };
-
+     const options = {
+          httpOnly: true,
+          secure: true,        // always true on Render (since it’s HTTPS)
+          sameSite: "None",    // required for cross-site cookies (Vercel → Render)
+           path: "/",           // 🔴 add this (some mobile browsers need it)
+           expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+           };
       return res
         .cookie("token", token, options)
         .status(200)
